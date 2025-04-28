@@ -1,54 +1,38 @@
-# React + TypeScript + Vite
+# 專案簡介
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+本專案為一個以 React + TypeScript + Vite 為基礎的影片逐字稿輔助工具，支援影片播放、逐字稿顯示與重點高亮。
 
-Currently, two official plugins are available:
+## 專案架構
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- `src/api/`：模擬 AI 逐字稿資料 API（mockAi.ts）。
+- `src/components/VideoPreview/`：影片播放器元件，支援上傳、播放、進度、音量、跳段。
+- `src/components/VideoTranscript/`：逐字稿顯示元件，支援高亮、跳段、即時滾動。
+- `src/types/`：統一管理 TypeScript 型別。
+- 其他：專案設定、靜態資源、樣式等。
 
-## Expanding the ESLint configuration
+## 主要功能
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- 影片播放器：
+  - 上傳本地影片並播放
+  - 進度條、時間、音量、靜音控制
+  - 拖曳上傳、點擊進度條跳段
+  - 依逐字稿高亮重點片段
+- 逐字稿顯示：
+  - 分區段顯示逐字稿
+  - 目前播放區間自動高亮與滾動
+  - 點擊逐字稿跳至對應時間
+- 模擬 AI API：
+  - 回傳分段逐字稿與重點句子
+  - 型別集中於 `src/types/index.ts` 方便維護
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 技術工具與選用原因
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **React**：主流前端框架，組件化、易維護
+- **TypeScript**：靜態型別，提升可靠性
+- **Vite**：快速建構、熱更新體驗佳
+- **CSS Modules**：元件化樣式，避免污染
+- **ESLint**：維持程式碼品質
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+> 選用這些技術可提升專案可維護性、開發效率與團隊協作便利性，並利於未來擴充。
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+---
