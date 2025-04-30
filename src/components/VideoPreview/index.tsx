@@ -194,11 +194,13 @@ const VideoPreview: React.FC<
   }, [currentTime]);
 
   const getCurrentSubtitle = () => {
-    if (!sections.length || !playerState.currentTime) return null;
+    if (!sections.length || playerState.currentTime === undefined) return null;
 
     for (const section of sections) {
       for (const item of section.items) {
         if (
+          item.startSeconds !== undefined &&
+          item.endSeconds !== undefined &&
           playerState.currentTime >= item.startSeconds &&
           playerState.currentTime <= item.endSeconds
         ) {
@@ -318,18 +320,19 @@ const VideoPreview: React.FC<
         ></div>
         <div className="timeline-markers">
           {highlights.map((marker, index) => {
-            if (
-              marker.startSeconds === undefined ||
-              marker.endSeconds === undefined ||
-              !playerState.duration ||
-              !marker.isHighlighted
-            )
+            if (!playerState.duration) return null;
+
+            const startTime = Math.max(0, marker.startSeconds);
+            const endTime = Math.min(marker.endSeconds, playerState.duration);
+
+            // 確保時間範圍有效
+            if (startTime >= endTime || startTime >= playerState.duration) {
               return null;
-            const left = (marker.startSeconds / playerState.duration) * 100;
-            const width =
-              ((marker.endSeconds - marker.startSeconds) /
-                playerState.duration) *
-              100;
+            }
+
+            const left = (startTime / playerState.duration) * 100;
+            const width = ((endTime - startTime) / playerState.duration) * 100;
+
             return (
               <div
                 key={index}
@@ -342,16 +345,13 @@ const VideoPreview: React.FC<
                   height: "100%",
                   background: "#4a76f5",
                   borderRadius: "4px",
-                  opacity: 0.7,
+                  opacity: marker.isHighlighted ? 0.8 : 0.4,
                   zIndex: 2,
                   cursor: "pointer",
                 }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  seekToTime(marker.startSeconds);
-                  onMarkerClick(marker.startSeconds);
-                }}
-                title={marker.text}
+                title={`${marker.text} (${formatTime(startTime)} - ${formatTime(
+                  endTime
+                )})`}
               />
             );
           })}
