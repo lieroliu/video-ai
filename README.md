@@ -47,7 +47,7 @@
    - 提供 HTTPS 支援
 
 2. 部署網址：
-   - 主網址：`https://video-ai.vercel.app`
+   - 主網址：[https://video-ai-sand.vercel.app/](https://video-ai-sand.vercel.app/)
    - 預覽網址：每次 PR 都會產生一個預覽網址
 
 3. 環境變數：
