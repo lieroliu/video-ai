@@ -1,13 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
-import { VideoPlayerState, VideoPreviewProps } from "../../types";
+import {
+  TranscriptSection,
+  VideoPlayerState,
+  VideoPreviewProps,
+} from "../../types";
 import "./styles.css";
 
-const VideoPreview: React.FC<VideoPreviewProps> = ({
+const VideoPreview: React.FC<
+  VideoPreviewProps & { sections?: TranscriptSection[] }
+> = ({
   onTimeUpdate,
   highlights,
   onMarkerClick,
   onVideoUpload,
   currentTime,
+  sections = [],
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -186,6 +193,24 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({
     }
   }, [currentTime]);
 
+  const getCurrentSubtitle = () => {
+    if (!sections.length || !playerState.currentTime) return null;
+
+    for (const section of sections) {
+      for (const item of section.items) {
+        if (
+          playerState.currentTime >= item.startSeconds &&
+          playerState.currentTime <= item.endSeconds
+        ) {
+          return { text: item.text, sectionTitle: section.title };
+        }
+      }
+    }
+    return null;
+  };
+
+  const currentSubtitle = getCurrentSubtitle();
+
   return (
     <div className="video-preview-container">
       <div
@@ -195,14 +220,21 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({
         onDrop={handleDrop}
       >
         {playerState.videoUrl ? (
-          <video
-            ref={videoRef}
-            onTimeUpdate={handleTimeUpdate}
-            onLoadedMetadata={handleLoadedMetadata}
-            src={playerState.videoUrl}
-          >
-            Your browser does not support the video tag.
-          </video>
+          <div>
+            {currentSubtitle && (
+              <div className="subtitle-container">
+                <div className="subtitle-text">{currentSubtitle.text}</div>
+              </div>
+            )}
+            <video
+              ref={videoRef}
+              onTimeUpdate={handleTimeUpdate}
+              onLoadedMetadata={handleLoadedMetadata}
+              src={playerState.videoUrl}
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
         ) : (
           <div
             className="video-placeholder"
@@ -220,6 +252,7 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({
           </div>
         )}
       </div>
+
       <div className="video-controls">
         <button
           className="control-button"
