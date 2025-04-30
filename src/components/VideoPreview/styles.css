@@ -141,20 +141,6 @@
   position: relative;
 }
 
-.timeline-sections {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.timeline-section-bar {
-  pointer-events: none;
-}
-
 .timeline-progress {
   position: absolute;
   top: 0;
@@ -177,6 +163,7 @@
 .timeline-marker-bar {
   transition: background 0.2s;
 }
+
 .timeline-marker-bar:hover {
   background: #1746b5;
   opacity: 1;

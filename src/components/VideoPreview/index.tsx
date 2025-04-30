@@ -9,10 +9,10 @@ import "./styles.css";
 const VideoPreview: React.FC<
   VideoPreviewProps & { sections?: TranscriptSection[] }
 > = ({
-  onTimeUpdate,
-  highlights,
-  onVideoUpload,
   currentTime,
+  onTimeUpdate,
+  onVideoUpload,
+  highlights = [],
   sections = [],
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
