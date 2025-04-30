@@ -4,7 +4,7 @@
 
 ## 專案架構
 
-- `src/api/`：模擬 AI 逐字稿資料 API（mockAi.ts）。
+- `src/api/`：AI 逐字稿資料 API（aiTranscript.ts）。
 - `src/components/VideoPreview/`：影片播放器元件，支援上傳、播放、進度、音量、跳段。
 - `src/components/VideoTranscript/`：逐字稿顯示元件，支援高亮、跳段、即時滾動。
 - `src/types/`：統一管理 TypeScript 型別。
@@ -21,7 +21,7 @@
   - 分區段顯示逐字稿
   - 目前播放區間自動高亮與滾動
   - 點擊逐字稿跳至對應時間
-- 模擬 AI API：
+- AI 逐字稿 API：
   - 回傳分段逐字稿與重點句子
   - 型別集中於 `src/types/index.ts` 方便維護
 

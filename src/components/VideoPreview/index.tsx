@@ -11,7 +11,6 @@ const VideoPreview: React.FC<
 > = ({
   onTimeUpdate,
   highlights,
-  onMarkerClick,
   onVideoUpload,
   currentTime,
   sections = [],
@@ -27,6 +26,7 @@ const VideoPreview: React.FC<
     volume: 1,
     isMuted: false,
   });
+  const [showSubtitle, setShowSubtitle] = useState(true);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -97,12 +97,6 @@ const VideoPreview: React.FC<
           videoRef.current.duration
         )
       );
-    }
-  };
-
-  const seekToTime = (timeInSeconds: number) => {
-    if (videoRef.current && playerState.videoUrl) {
-      videoRef.current.currentTime = timeInSeconds;
     }
   };
 
@@ -213,6 +207,10 @@ const VideoPreview: React.FC<
 
   const currentSubtitle = getCurrentSubtitle();
 
+  const toggleSubtitle = () => {
+    setShowSubtitle(!showSubtitle);
+  };
+
   return (
     <div className="video-preview-container">
       <div
@@ -223,7 +221,7 @@ const VideoPreview: React.FC<
       >
         {playerState.videoUrl ? (
           <div>
-            {currentSubtitle && (
+            {showSubtitle && currentSubtitle && (
               <div className="subtitle-container">
                 <div className="subtitle-text">{currentSubtitle.text}</div>
               </div>
@@ -300,10 +298,19 @@ const VideoPreview: React.FC<
             step="0.1"
             value={playerState.volume}
             onChange={handleVolumeChange}
-            disabled={!playerState.videoUrl}
             className="volume-slider"
           />
         </div>
+        <button
+          className="control-button"
+          onClick={toggleSubtitle}
+          disabled={!playerState.videoUrl}
+          title={showSubtitle ? "隱藏字幕" : "顯示字幕"}
+        >
+          <span className="material-icons">
+            {showSubtitle ? "subtitles" : "subtitles_off"}
+          </span>
+        </button>
         <div className="time-display">
           {formatTime(playerState.currentTime)} /{" "}
           {formatTime(playerState.duration)}

@@ -5,6 +5,7 @@ interface VideoTranscriptProps {
   currentTime: number;
   onItemClick?: (startSeconds: number) => void;
   sections: TranscriptSection[];
+  autoScroll: boolean;
 }
 
 const formatTime = (sec: number) => {
@@ -21,6 +22,7 @@ const VideoTranscript: React.FC<VideoTranscriptProps> = ({
   currentTime,
   onItemClick,
   sections,
+  autoScroll,
 }) => {
   const transcriptRef = useRef<HTMLDivElement>(null);
   const currentItemRef = useRef<HTMLDivElement>(null);
@@ -30,13 +32,13 @@ const VideoTranscript: React.FC<VideoTranscriptProps> = ({
   };
 
   useEffect(() => {
-    if (currentItemRef.current && transcriptRef.current) {
+    if (currentItemRef.current && transcriptRef.current && autoScroll) {
       currentItemRef.current.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
     }
-  }, [currentTime]);
+  }, [autoScroll, currentTime]);
 
   return (
     <div className="transcript-container" ref={transcriptRef}>

@@ -10,7 +10,7 @@ export interface TranscriptSection {
   items: TranscriptItem[];
 }
 
-export interface MockAiResponse {
+export interface AiTranscriptResponse {
   sections: TranscriptSection[];
   highlights: TranscriptItem[];
 }
@@ -19,7 +19,6 @@ export interface VideoPreviewProps {
   currentTime: string;
   highlights: TranscriptItem[];
   onTimeUpdate: (time: number) => void;
-  onMarkerClick: (timeInSeconds: number) => void;
   onVideoUpload?: () => void;
 }
 
